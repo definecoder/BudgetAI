@@ -21,3 +21,12 @@ export const addExpense = async (req: Request, res: Response) => {
     res.send({data, msg: "Expense added successfully"});
     
 };
+
+export const getExpenses = async (req: Request, res: Response) => {
+    
+    const { userId } = req.body;
+
+    const data = await Expense.find({ user: userId });
+
+    res.send(data);
+};
