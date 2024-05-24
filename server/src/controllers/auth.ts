@@ -24,7 +24,7 @@ export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email, password });
   if (!user) {
-    return res.status(404).send("User not found");
+    return res.status(404).send("Login Failed");
   }  
   const token = generateToken({ id: user._id, email }, "1h");
   const responseData = {
