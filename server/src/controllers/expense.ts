@@ -30,3 +30,12 @@ export const getExpenses = async (req: Request, res: Response) => {
 
     res.send(data);
 };
+
+export const getExpense = async (req: Request, res: Response) => {
+        
+        const { id } = req.params;
+    
+        const data = await Expense.findById(id);
+    
+        res.send(data);
+    }
