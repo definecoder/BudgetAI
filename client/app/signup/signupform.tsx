@@ -13,10 +13,11 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { FormEvent, useState } from "react"
+import { useRouter } from 'next/navigation';
 
 export function SignUpForm() {
 
-
+  const router = useRouter();
   const [signup, setSignup] = useState({
     name: '',
     email: '',
@@ -34,7 +35,9 @@ export function SignUpForm() {
 
     const response = await axios.post('http://localhost:3000/auth/signup', signup);
 
-    response.statusText === 'OK' ? alert('Account created successfully') : alert('Account creation failed');  
+    console.log(response.data)
+
+    response.statusText === 'OK' && router.push("/dashboard");
     
     
   }
