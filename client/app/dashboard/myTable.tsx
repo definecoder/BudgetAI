@@ -52,6 +52,7 @@ const data: Payment[] = [
     amount: 242,
     status: "success",
     email: "Abe45@gmail.com",
+    test:"ami test"
   },
   {
     id: "derv1ws0",
@@ -78,6 +79,7 @@ export type Payment = {
   amount: number
   status: "pending" | "processing" | "success" | "failed"
   email: string
+  test?: string
 }
 
 export const columns: ColumnDef<Payment>[] = [
@@ -139,6 +141,16 @@ export const columns: ColumnDef<Payment>[] = [
 
       return <div className="text-right font-medium">{formatted}</div>
     },
+  },
+  {
+
+    accessorKey: "test",
+    header: () => <div className="text-right">Test</div>,
+    
+    cell: ({ row }) => {
+      
+      return <div className="text-right font-medium">{row.getValue("test")}</div>
+    }
   },
   {
     id: "actions",
@@ -203,16 +215,17 @@ export function DataTableDemo() {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
+        
           placeholder="Filter emails..."
           value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("email")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm bg-transparent border-secondary"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
+            <Button variant="outline" className="ml-auto bg-transparent border-secondary">
               Columns <ChevronDownIcon className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
@@ -244,7 +257,7 @@ export function DataTableDemo() {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead className="text-primary" key={header.id}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -294,6 +307,7 @@ export function DataTableDemo() {
         </div>
         <div className="space-x-2">
           <Button
+            className="bg-transparent border-2 border-secondary"
             variant="outline"
             size="sm"
             onClick={() => table.previousPage()}
@@ -302,7 +316,8 @@ export function DataTableDemo() {
             Previous
           </Button>
           <Button
-            variant="outline"
+          className="bg-transparent border-2 border-secondary"
+            variant="default"
             size="sm"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}

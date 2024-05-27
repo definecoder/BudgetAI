@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea"
 import { DataTableDemo } from "./myTable";
-
+import {PaperPlaneIcon} from '@radix-ui/react-icons'
 
 
 export default function Page() {
@@ -17,7 +17,7 @@ export default function Page() {
                     <div className="border-2 flex flex-col">
                         <Label className="text-primary mb-5 text-3xl">Your Expense</Label>
                         <Textarea className="bg-transparent border-secondary" placeholder="What did you spend money on today?" />
-                        <Button className=" bg-transparent mt-5 border-secondary border-2 w-[30%] self-end">Submit</Button>
+                        <Button className=" bg-transparent mt-5 border-secondary border-2 w-[30%] self-end"> <PaperPlaneIcon />  </Button>
                     </div>
 
                     {/* lower */}
