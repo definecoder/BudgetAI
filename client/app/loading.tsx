@@ -1,8 +1,9 @@
+import { LoadingSpinner } from "@/components/utils/loading"
 
 
 const Loading = () => {
   return (
-    <div>Loading</div>
+    LoadingSpinner({className: "text-primary"}) 
   )
 }
 

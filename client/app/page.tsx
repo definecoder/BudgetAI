@@ -2,6 +2,7 @@ import Image from "next/image";
 import bgImage from "@/public/bgImage.png";
 import HomePageNavBar from "@/components/homepage/HomePageNavBar";
 import {Button} from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -27,7 +28,7 @@ export default function Home() {
             <p className=" pt-10 text-3xl text-secondary">Your Personal Budget Manager</p>
             <h1 className=" pb-10 text-center">Powered By AI</h1>
 
-            <Button className=" ml-[35%] bg-transparent border-secondary border-2">Get Started</Button>
+            <Link href={"/login"}><Button className=" ml-[35%] bg-transparent border-secondary border-2">Get Started</Button></Link>
           </div>
           
         </div>
