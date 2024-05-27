@@ -1,10 +1,13 @@
-import { LoadingSpinner } from "@/components/utils/loading"
 
+
+import { Loader } from '@mantine/core';
 
 const Loading = () => {
   return (
-    LoadingSpinner({className: "text-primary"}) 
-  )
+    <div className=' h-[100vh] flex justify-center items-center'>
+      <Loader color="blue" size={100} type="dots" />
+    </div>
+  );
 }
 
 export default Loading

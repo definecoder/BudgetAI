@@ -1,6 +1,6 @@
 import Image from "next/image";
 import bgImage from "@/public/bgImage.png";
-import HomePageNavBar from "@/components/homepage/HomePageNavBar";
+import HomePageNavBar from "@/components/navBars/HomePageNavBar";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
 

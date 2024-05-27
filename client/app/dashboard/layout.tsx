@@ -1,4 +1,4 @@
-import DashboardNavBar from "@/components/homepage/DashboardNavBar";
+import DashboardNavBar from "@/components/navBars/DashboardNavBar";
 
 
 

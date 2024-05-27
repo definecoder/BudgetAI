@@ -10,13 +10,15 @@ const DashboardNavBar = () => {
         {/* logo part */}
         <div className=' flex'>
             
-            <Image
-                src={logo}
-                alt='logo'
-                height={96}
-                width={96}
-                className=' pt-1'
-            ></Image>
+            <Link href={'/dashboard'}>
+                <Image
+                    src={logo}
+                    alt='logo'
+                    height={96}
+                    width={96}
+                    className=' pt-1'
+                ></Image>
+            </Link>
 
         </div>
 
@@ -24,8 +26,8 @@ const DashboardNavBar = () => {
         <div className=' flex justify-between items-center gap-8'>
             <Link href={'#'}> Dashboard</Link>
             <Link href={'#'}> Analytics</Link>
-            <Link href={'/#'}> Profile</Link>
-            <Link href={'/#'}> Logout</Link>
+            <Link href={'#'}> Profile</Link>
+            <Link href={'/'}> Logout</Link>
         </div>
         
     </div>

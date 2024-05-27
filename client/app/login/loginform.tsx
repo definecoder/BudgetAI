@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -10,8 +12,16 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
+import { useState } from "react"
 
 export function LoginForm() {
+
+  const [login, setLogin] = useState({  
+    email: '',
+    password: ''
+  });
+
+
   return (
     <Card className="w-full max-w-sm bg-transparent border-secondary">
       <CardHeader>

@@ -1,10 +1,12 @@
-import { LoginForm } from "./signupform";
+import AuthNavBar from "@/components/navBars/AuthNavBar";
+import { SignUpForm } from "./signupform";
 
 export default function Page() {
     return (
-        <main className="h-[100vh] flex justify-center items-center">
-            <div className="">
-                <LoginForm />
+        <main>
+            <AuthNavBar />
+            <div className="h-[80vh] flex justify-center items-center">
+                <SignUpForm />
             </div>
         </main>
     );

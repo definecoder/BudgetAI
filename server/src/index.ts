@@ -1,31 +1,32 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
+import express from "express";
+import routes from "./routes";
+import cors from "cors";
 
-import express from 'express';
-import routes from './routes';
-
-import { connect } from './db/database';
+import { connect } from "./db/database";
 
 const app = express();
 const port = 3000;
 
-// add cors
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  next();
-});
+app.use(
+  cors({
+    origin: "http://localhost:3001",
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
-try{
+try {
   app.use("/", routes);
 } catch (error) {
   console.log(error);
 }
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+app.get("/", (req, res) => {
+  res.send("Hello World!");
 });
 
 app.listen(port, async () => {
