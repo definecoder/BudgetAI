@@ -48,7 +48,7 @@ export function LoginForm() {
         <Button className="w-full text-white bg-transparent border-2 border-secondary">Login with Google</Button>
       </CardFooter>
       <CardFooter className=" text-white">
-        <p>Don&apos;t Have an Account? (</p>  <Link className=" text-primary underline " href={'/signup'}> Create One!</Link>)
+        <p>Don&apos;t Have an Account? (</p>  <Link className="text-primary underline " href={'/signup'}> Create One!</Link>)
       </CardFooter>
 
     </Card>

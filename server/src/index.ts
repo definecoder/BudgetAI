@@ -19,11 +19,7 @@ app.use(
 
 app.use(express.json());
 
-try {
-  app.use("/", routes);
-} catch (error) {
-  console.log(error);
-}
+app.use("/", routes);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

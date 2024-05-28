@@ -1,10 +1,15 @@
+'use client'
+
 import Image from "next/image";
 import bgImage from "@/public/bgImage.png";
 import HomePageNavBar from "@/components/navBars/HomePageNavBar";
 import {Button} from "@/components/ui/button";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+
+  const router = useRouter();
+
   return (
     <main>
       <div className=" absolute ml-[45vw] mt-[20vh]">
@@ -28,7 +33,9 @@ export default function Home() {
             <p className=" pt-10 text-3xl text-secondary">Your Personal Budget Manager</p>
             <h1 className=" pb-10 text-center">Powered By AI</h1>
 
-            <Link href={"/login"}><Button className=" ml-[35%] bg-transparent border-secondary border-2">Get Started</Button></Link>
+            <Button className=" ml-[35%] bg-transparent border-secondary border-2" onClick={()=>{
+              router.push('/signup')
+            }}>Get Started</Button>
           </div>
           
         </div>

@@ -12,11 +12,13 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { FormEvent, useState } from "react"
+import React, { FormEvent, useContext, useState } from "react"
 import { useRouter } from 'next/navigation';
+import { cookies } from 'next/headers';
 
 export function SignUpForm() {
 
+  
   const router = useRouter();
   const [signup, setSignup] = useState({
     name: '',
@@ -30,14 +32,22 @@ export function SignUpForm() {
   }
   
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+
+    try{
+      e.preventDefault();
+      const response = await axios.post('http://localhost:3000/auth/signup', signup);
+      console.log(response.data)
+      if(response.statusText === 'OK'){
+        localStorage.setItem('token', response.data.token);
+        router.push("/dashboard");
+
+      } 
+    }
+    catch(e){
+      alert(JSON.stringify(e));
+    }
+
     
-
-    const response = await axios.post('http://localhost:3000/auth/signup', signup);
-
-    console.log(response.data)
-
-    response.statusText === 'OK' && router.push("/dashboard");
     
     
   }
@@ -60,8 +70,7 @@ export function SignUpForm() {
               <Input
                 id="name"
                 type="name"
-                
-                placeholder="Shawon Majid"
+                placeholder="Enter your name"
                 onChange={handleChange}
                 required
               />
