@@ -40,91 +40,89 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Categories } from "@/components/utils/categories"
+import axios from "axios"
 
-const data: Expense[] = [
-  {
-    id: "m5gr84i9",
-    amount: 316,
-    description: "Dinner with friends",
-    category: Categories.Food
-  },
-  {
-    id: "m5gr84i8",
-    amount: 20,
-    description: "Groceries",
-    category: Categories.Food
-  },
-  {
-    id: "m5gr84i7",
-    amount: 100,
-    description: "Gas",
-    category: Categories.Transportation
-  },
-  {
-    id: "m5gr84i6",
-    amount: 50,
-    description: "Coffee",
-    category: Categories.Food
-  },
-  {
-    id: "m5gr84i5",
-    amount: 200,
-    description: "Concert tickets",
-    category: Categories.Entertainment_and_Recreation
-  },
-  {
-    id: "m5gr84i4",
-    amount: 150,
-    description: "Clothes",
-    category: Categories.Clothing_and_Accessories
-  },
-  {
-    id: "m5gr84i3",
-    amount: 30,
-    description: "Lunch",
-    category: Categories.Food
-  },
-  {
-    id: "m5gr84i2",
-    amount: 20,
-    description: "Books",
-    category: Categories.Education
-  },
-  {
-    id: "m5gr84i1",
-    amount: 10,
-    description: "Snacks",
-    category: Categories.Food
-  },
-  {
-    id: "m5gr84i0",
-    amount: 50,
-    description: "Movie tickets",
-    category: Categories.Entertainment_and_Recreation
-  },
-  {
-    id: "m5gr84i03",
-    amount: 50,
-    description: "Movie tickets",
-    category: Categories.Entertainment_and_Recreation
-  },
-  {
-    id: "m5gr84i04",
-    amount: 50,
-    description: "Movie tickets",
-    category: Categories.Entertainment_and_Recreation
-  },
-
-
-
-
-]
+// const data: Expense[] = [
+//   {
+//     id: "m5gr84i9",
+//     amount: 316,
+//     description: "Dinner with friends",
+//     category: Categories.Food
+//   },
+//   {
+//     id: "m5gr84i8",
+//     amount: 20,
+//     description: "Groceries",
+//     category: Categories.Food
+//   },
+//   {
+//     id: "m5gr84i7",
+//     amount: 100,
+//     description: "Gas",
+//     category: Categories.Transportation
+//   },
+//   {
+//     id: "m5gr84i6",
+//     amount: 50,
+//     description: "Coffee",
+//     category: Categories.Food
+//   },
+//   {
+//     id: "m5gr84i5",
+//     amount: 200,
+//     description: "Concert tickets",
+//     category: Categories.Entertainment_and_Recreation
+//   },
+//   {
+//     id: "m5gr84i4",
+//     amount: 150,
+//     description: "Clothes",
+//     category: Categories.Clothing_and_Accessories
+//   },
+//   {
+//     id: "m5gr84i3",
+//     amount: 30,
+//     description: "Lunch",
+//     category: Categories.Food
+//   },
+//   {
+//     id: "m5gr84i2",
+//     amount: 20,
+//     description: "Books",
+//     category: Categories.Education
+//   },
+//   {
+//     id: "m5gr84i1",
+//     amount: 10,
+//     description: "Snacks",
+//     category: Categories.Food
+//   },
+//   {
+//     id: "m5gr84i0",
+//     amount: 50,
+//     description: "Movie tickets",
+//     category: Categories.Entertainment_and_Recreation
+//   },
+//   {
+//     id: "m5gr84i03",
+//     amount: 50,
+//     description: "Movie tickets",
+//     category: Categories.Entertainment_and_Recreation
+//   },
+//   {
+//     id: "m5gr84i04",
+//     amount: 50,
+//     description: "Movie tickets",
+//     category: Categories.Entertainment_and_Recreation
+//   },
+// ]
 
 export type Expense = {
   id: string
   amount: number
   category?: Categories
   description: string
+
 }
 
 export const columns: ColumnDef<Expense>[] = [
@@ -240,7 +238,8 @@ export const columns: ColumnDef<Expense>[] = [
   },
 ]
 
-export function DataTableDemo() {
+export function DataTableDemo({userId}: {userId: string}) {
+  const [data, setData] = React.useState<Expense[]>([])
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -248,6 +247,26 @@ export function DataTableDemo() {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
+
+
+  React.useEffect(()=>{
+    const token = localStorage.getItem('token');
+    async function fetchExpenses(){
+      try{
+        const response = await axios.get(`http://localhost:3000/expense/getAllExpenses/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        console.log(response.data);
+        setData(response.data);
+      }
+      catch(e){
+        alert(JSON.stringify(e));
+      }
+    }
+    fetchExpenses();
+  })
 
   const table = useReactTable({
     data,

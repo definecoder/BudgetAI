@@ -20,4 +20,12 @@ const getLoggedInUser = errorWrapper(
   { statusCode: 400, message: "Error getting logged in user" }
 );
 
-export { getLoggedInUser };
+const getAllUsers = errorWrapper(
+  async (req: Request, res: Response) => {
+    const users = await User.find();
+    res.send(users);
+  },
+  { statusCode: 400, message: "Error getting all users" }
+);
+
+export { getLoggedInUser, getAllUsers };

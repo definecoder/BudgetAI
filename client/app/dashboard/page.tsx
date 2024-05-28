@@ -11,6 +11,7 @@ import axios from "axios";
 
 
 export type User = {
+    _id: string;
     name: string;
     email: string;
     dailyGoal?: number,
@@ -67,7 +68,7 @@ export default function Page() {
                 </div>
                 {/* right wrapper */}
                 <div className="hidden md:block">
-                    <DataTableDemo />
+                    <DataTableDemo userId={user._id} />
                 </div>
             </div>
         </main>
