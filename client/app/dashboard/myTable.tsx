@@ -39,50 +39,95 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Categories } from "@/components/utils/categories"
 
-const data: Payment[] = [
+const data: Expense[] = [
   {
     id: "m5gr84i9",
     amount: 316,
-    status: "success",
-    email: "ken99@yahoo.com",
+    description: "Dinner with friends",
+    category: Categories.Food
   },
   {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@gmail.com",
-    test:"ami test"
+    id: "m5gr84i8",
+    amount: 20,
+    description: "Groceries",
+    category: Categories.Food
   },
   {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@gmail.com",
+    id: "m5gr84i7",
+    amount: 100,
+    description: "Gas",
+    category: Categories.Transportation
   },
   {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@gmail.com",
+    id: "m5gr84i6",
+    amount: 50,
+    description: "Coffee",
+    category: Categories.Food
   },
   {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
+    id: "m5gr84i5",
+    amount: 200,
+    description: "Concert tickets",
+    category: Categories.Entertainment_and_Recreation
   },
+  {
+    id: "m5gr84i4",
+    amount: 150,
+    description: "Clothes",
+    category: Categories.Clothing_and_Accessories
+  },
+  {
+    id: "m5gr84i3",
+    amount: 30,
+    description: "Lunch",
+    category: Categories.Food
+  },
+  {
+    id: "m5gr84i2",
+    amount: 20,
+    description: "Books",
+    category: Categories.Education
+  },
+  {
+    id: "m5gr84i1",
+    amount: 10,
+    description: "Snacks",
+    category: Categories.Food
+  },
+  {
+    id: "m5gr84i0",
+    amount: 50,
+    description: "Movie tickets",
+    category: Categories.Entertainment_and_Recreation
+  },
+  {
+    id: "m5gr84i03",
+    amount: 50,
+    description: "Movie tickets",
+    category: Categories.Entertainment_and_Recreation
+  },
+  {
+    id: "m5gr84i04",
+    amount: 50,
+    description: "Movie tickets",
+    category: Categories.Entertainment_and_Recreation
+  },
+
+
+
+
 ]
 
-export type Payment = {
+export type Expense = {
   id: string
   amount: number
-  status: "pending" | "processing" | "success" | "failed"
-  email: string
-  test?: string
+  category?: Categories
+  description: string
 }
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Expense>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -106,57 +151,69 @@ export const columns: ColumnDef<Payment>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
-    ),
-  },
-  {
-    accessorKey: "email",
+    accessorKey: "category",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Email
+          Category
           <CaretSortIcon className="ml-2 h-4 w-4" />
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("category")}</div>
+    ),
+    enableSorting: true,
+    enableHiding: true,
+  },
+  {
+    accessorKey: "description",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Description
+          <CaretSortIcon className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => <div className="lowercase">{row.getValue("description")}</div>,
   },
   {
     accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
+    header:({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <div className="text-right">Amount</div>
+          <CaretSortIcon className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    }, 
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("amount"))
 
       // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
+      const formatted = new Intl.NumberFormat("bn-BD", {
         style: "currency",
-        currency: "USD",
+        currency: "BDT",
       }).format(amount)
 
       return <div className="text-right font-medium">{formatted}</div>
     },
   },
   {
-
-    accessorKey: "test",
-    header: () => <div className="text-right">Test</div>,
-    
-    cell: ({ row }) => {
-      
-      return <div className="text-right font-medium">{row.getValue("test")}</div>
-    }
-  },
-  {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original
+      const Expense = row.original
 
       return (
         <DropdownMenu>
@@ -169,13 +226,13 @@ export const columns: ColumnDef<Payment>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText(Expense.id)}
             >
-              Copy payment ID
+              Copy Expense ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem>View Expense details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
@@ -216,10 +273,10 @@ export function DataTableDemo() {
       <div className="flex items-center py-4">
         <Input
         
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter expense..."
+          value={(table.getColumn("description")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("description")?.setFilterValue(event.target.value)   
           }
           className="max-w-sm bg-transparent border-secondary"
         />
