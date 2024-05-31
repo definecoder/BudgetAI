@@ -11,10 +11,12 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { message } from "antd"
 import axios from "axios"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import Loading from "../loading"
 
 export function LoginForm() {
 
@@ -24,6 +26,7 @@ export function LoginForm() {
     email: '',
     password: ''
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -32,11 +35,22 @@ export function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await axios.post('http://localhost:3000/auth/login', login)
-    if(response.statusText === 'OK'){
-      localStorage.setItem('token', response.data.token);
-      router.push("/dashboard");
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post('http://localhost:3000/auth/login', login)
+      if(response.statusText === 'OK'){
+        localStorage.setItem('token', response.data.token);
+        setIsLoading(false);
+        router.push("/dashboard");
+      }  
+    } catch (error) {
+      message.error('Invalid email or password');
+      setIsLoading(false);
     }
+    
+
+
   }
 
 
@@ -64,7 +78,9 @@ export function LoginForm() {
         </CardContent>
         
         <CardFooter>
-          <Button className="w-full text-white bg-transparent border-2 border-secondary" type="submit">Sign in</Button>
+          <Button className="w-full text-white bg-transparent border-2 border-secondary" type="submit">
+            {isLoading ? <Loading /> : "Sign In"}
+          </Button>
           
         </CardFooter>
         <CardFooter>

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/nextjs-registry": "^1.0.0",
     "@coreui/icons": "^3.0.1",
     "@coreui/icons-react": "^2.2.1",
     "@mantine/core": "^7.10.0",
@@ -19,6 +20,7 @@
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
     "@tanstack/react-table": "^8.17.3",
+    "antd": "^5.17.4",
     "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",

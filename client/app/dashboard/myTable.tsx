@@ -41,6 +41,7 @@ import {
 } from "@/components/ui/table"
 import { Categories } from "@/components/utils/categories"
 import axios from "axios"
+import Loading from "../loading"
 
 // const data: Expense[] = [
 //   {
@@ -238,9 +239,9 @@ export const columns: ColumnDef<Expense>[] = [
   },
 ]
 
-export function DataTableDemo({userId}: {userId: string}) {
-  const [data, setData] = React.useState<Expense[]>([])
+export function DataTableDemo({data = []}: {data: Expense[]}) {
   const [sorting, setSorting] = React.useState<SortingState>([])
+  const [isLoading, setIsLoading] = React.useState(false)
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
@@ -249,24 +250,6 @@ export function DataTableDemo({userId}: {userId: string}) {
   const [rowSelection, setRowSelection] = React.useState({})
 
 
-  React.useEffect(()=>{
-    const token = localStorage.getItem('token');
-    async function fetchExpenses(){
-      try{
-        const response = await axios.get(`http://localhost:3000/expense/getAllExpenses/${userId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-        console.log(response.data);
-        setData(response.data);
-      }
-      catch(e){
-        alert(JSON.stringify(e));
-      }
-    }
-    fetchExpenses();
-  })
 
   const table = useReactTable({
     data,
@@ -289,7 +272,10 @@ export function DataTableDemo({userId}: {userId: string}) {
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      {isLoading ? <Loading /> 
+      : 
+      <><div className="flex items-center py-4">
+        
         <Input
         
           placeholder="Filter expense..."
@@ -401,7 +387,8 @@ export function DataTableDemo({userId}: {userId: string}) {
             Next
           </Button>
         </div>
-      </div>
+      </div></>
+    }
     </div>
   )
 }

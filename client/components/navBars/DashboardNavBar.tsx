@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 import logo from '@/public/logo.png'
 import {Button} from '@/components/ui/button'
@@ -27,7 +29,9 @@ const DashboardNavBar = () => {
             <Link href={'#'}> Dashboard</Link>
             <Link href={'#'}> Analytics</Link>
             <Link href={'#'}> Profile</Link>
-            <Link href={'/'}> Logout</Link>
+            <Link href={'/'} onClick={()=>{
+                localStorage.removeItem('token');
+            }}> Logout</Link>
         </div>
         
     </div>

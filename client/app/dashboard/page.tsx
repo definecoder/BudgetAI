@@ -8,7 +8,9 @@ import {PaperPlaneIcon} from '@radix-ui/react-icons'
 import { cookies} from 'next/headers';
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+import { message } from "antd";
+import NotLoggedIn from "@/components/generals/NotLoggedIn";
+import Loading from "../loading";
 
 export type User = {
     _id: string;
@@ -21,6 +23,9 @@ export type User = {
 
 export default function Page() {    
     const [user, setUser] = useState<User | null>(null);
+    const [isLoadingButton, setIsLoadingButton] = useState(false);
+    const [data, setData] = useState([]);   
+
     useEffect(()=>{
         const token = localStorage.getItem('token');
         async function fetchUser(){
@@ -41,25 +46,78 @@ export default function Page() {
             fetchUser();
         }
         else{
-            alert('You are not logged in');
+            message.error('Youre not logged in');
         }
     }, [])
 
+    useEffect(()=>{
+    const token = localStorage.getItem('token');
+    async function fetchExpenses(){
+      try{
+        const response = user?._id && await axios.get(`http://localhost:3000/expense/getAllExpenses/${user?._id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        console.log(response && response.data);
+        setData(response && response.data);
+      }
+      catch(e){
+        alert(JSON.stringify(e));
+      }
+    }
+    fetchExpenses();
+  }, [user?._id])
+
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const token = localStorage.getItem('token');
+        const data = new FormData(e.currentTarget);
+        const expense = data.get('expense') as string;
+        try{
+
+            setIsLoadingButton(true);
+
+            const userId = '66558be44804b8c937d9782f'
+            const response = await axios.post('http://localhost:3000/expense/add', {text: expense, userId: userId}, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+
+            
+            setIsLoadingButton(false);
+            if(response.statusText === 'OK'){
+                message.success('Expense added successfully');
+            }                
+
+        }
+        catch(e){
+            setIsLoadingButton(false);
+            message.error('Failed to add expense');
+        }
+    }
+
     
     
-    return !user ? (<> <div>Youre not logged in</div> </>) : (
+    return !user ? (<NotLoggedIn />) : (
         <main>
             {/* main wrapper */}
             <div className="flex  h-[80vh] justify-around">
                 {/* left wrapper */}
                 <div className=" flex flex-col justify-center h-full w-[40vw]">
                     {/* upper */}
-                    <div className=" flex flex-col">
-                        <h1 className="self-start mb-20">Have a good day, <b className="text-secondary">{user && user['name']}!</b></h1>
-                        <Label className="text-primary mb-5 text-3xl">Your Expense</Label>
-                        <Textarea className="bg-transparent border-secondary" placeholder="What did you spend money on today?" />
-                        <Button className=" bg-transparent mt-5 border-secondary border-2 w-[30%] max-w-[100px] self-end"> <PaperPlaneIcon />  </Button>
-                    </div>
+                    <form onSubmit={handleSubmit}>
+                        <div className=" flex flex-col">
+                            <h1 className="self-start mb-20">Have a good day, <b className="text-secondary">{user && user['name']}!</b></h1>
+                            <Label className="text-primary mb-5 text-3xl">Your Expense</Label>
+                            <Textarea name="expense" className="bg-transparent border-secondary" placeholder="What did you spend money on today?" />
+                            <Button type="submit" className=" bg-transparent mt-5 border-secondary border-2 w-[30%] max-w-[100px] self-end"> 
+                                {isLoadingButton ? <Loading /> : <PaperPlaneIcon /> }
+                            </Button>
+                        </div>
+                    </form>
 
                     {/* lower */}
                     {/* <div className="border-2">
@@ -68,7 +126,7 @@ export default function Page() {
                 </div>
                 {/* right wrapper */}
                 <div className="hidden md:block">
-                    <DataTableDemo userId={user._id} />
+                    <DataTableDemo data={data} />
                 </div>
             </div>
         </main>

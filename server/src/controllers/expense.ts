@@ -37,7 +37,7 @@ export const getExpenses = errorWrapper(
 
     console.log(userId);
 
-    const data = await Expense.find({ user: userId });
+    const data = await Expense.find({ user: userId }).sort({ createdAt: -1 });
 
     console.log(data);
 
@@ -65,4 +65,16 @@ export const getAllExpensesOfEveryUser = errorWrapper(
   },
   { statusCode: 400, message: "Get all expenses failed" }
 );
+
+export const deleteExpense = errorWrapper(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const data = await Expense.findByIdAndDelete(id);
+
+    res.send(data);
+  },
+  { statusCode: 400, message: "Delete expense failed" }
+);
+
 // Path: server/src/controllers/user.ts
