@@ -1,8 +1,8 @@
-function sortedSquares(nums: number[]): number[] {
-  const squares: number[] = [];
-  const negs = nums.filter((num) => num < 0).map((num) => -num);
-  console.log(negs);
-  return squares;
+function maxProfit(prices: number[]): number {
+  return prices.reduce((prev, cur, idx) => {
+    if (idx == 0) return 0;
+    return prev + Math.max(0, prices[idx] - prices[idx - 1]);
+  }, 0);
 }
 
-sortedSquares([-4, -1, 0, 3, 10]);
+console.log(maxProfit([1, 2, 2]));

@@ -1,18 +1,26 @@
 import { Request, Response } from "express";
 import Expense from "../models/expense";
 import errorWrapper from "../middlewares/ErrorWrapper";
+import { getExpenseInfo } from "../services/addExpenseService/addBudget";
+import OpenAI from "openai";
 
 export const addExpense = errorWrapper(
   async (req: Request, res: Response) => {
-    console.log(req.body);
+    const { text, userId } = req.body;
 
-    const { amount, description, category, userId } = req.body;
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
 
     // Add the expense to the database
+
+    let expenseData = await getExpenseInfo(text, openai);
+
+    expenseData = expenseData.replace(/,\s*([\]}])/g, "$1");
+    const expenseInfo = JSON.parse(expenseData);
+
     const expense = new Expense({
-      amount,
-      description,
-      category,
+      ...expenseInfo,
       user: userId,
     });
 

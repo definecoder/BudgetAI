@@ -1,0 +1,5 @@
+{
+    "category": "Food",
+    "amount": 150,
+    "description": "Ate burger from Burger Point"
+}
