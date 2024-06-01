@@ -7,7 +7,7 @@ const expenseSchema = new mongoose.Schema({
   description: String,
   date: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -15,7 +15,7 @@ const expenseSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
 });
 

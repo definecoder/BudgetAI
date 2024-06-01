@@ -23,11 +23,14 @@ export type User = {
 
 export default function Page() {    
     const [user, setUser] = useState<User | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
     const [isLoadingButton, setIsLoadingButton] = useState(false);
     const [data, setData] = useState([]);   
+    const [isLoggedIn, setIsLoggedIn] = useState(true);    
 
     useEffect(()=>{
         const token = localStorage.getItem('token');
+        setIsLoading(true);
         async function fetchUser(){
             try{
                 const response = await axios.get('http://localhost:3000/users/loggedin', {
@@ -35,18 +38,24 @@ export default function Page() {
                         Authorization: `Bearer ${token}`
                     }
                 })
+
+                setIsLoading(false);
                 console.log(response.data);
                 setUser(response.data);
+
             }
             catch(e){
-                alert(JSON.stringify(e));
+                message.error('login failed');
+                setIsLoading(false);
             }            
         }
         if(token){
+            setIsLoggedIn(true);
             fetchUser();
         }
         else{
             message.error('Youre not logged in');
+            setIsLoggedIn(false);
         }
     }, [])
 
@@ -67,7 +76,7 @@ export default function Page() {
       }
     }
     fetchExpenses();
-  }, [user?._id])
+  }, [isLoadingButton, user?._id])
 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -101,9 +110,10 @@ export default function Page() {
 
     
     
-    return !user ? (<NotLoggedIn />) : (
+    return (
         <main>
             {/* main wrapper */}
+            {isLoggedIn ? isLoading ? <Loading /> :
             <div className="flex  h-[80vh] justify-around">
                 {/* left wrapper */}
                 <div className=" flex flex-col justify-center h-full w-[40vw]">
@@ -129,6 +139,8 @@ export default function Page() {
                     <DataTableDemo data={data} />
                 </div>
             </div>
+            : <NotLoggedIn />
+            }
         </main>
 
     );

@@ -42,6 +42,8 @@ import {
 import { Categories } from "@/components/utils/categories"
 import axios from "axios"
 import Loading from "../loading"
+import { DeleteIcon, FilePenLine, Trash2 } from "lucide-react"
+import { message } from "antd"
 
 // const data: Expense[] = [
 //   {
@@ -119,12 +121,14 @@ import Loading from "../loading"
 // ]
 
 export type Expense = {
-  id: string
+  _id: string
   amount: number
   category?: Categories
   description: string
 
 }
+
+
 
 export const columns: ColumnDef<Expense>[] = [
   {
@@ -224,14 +228,12 @@ export const columns: ColumnDef<Expense>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(Expense.id)}
-            >
-              Copy Expense ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View Expense details</DropdownMenuItem>
+            {/* <DropdownMenuItem><FilePenLine color="blue" /> Edit Expense</DropdownMenuItem> */}
+            <DropdownMenuItem onClick={async()=>{
+              await axios.delete(`http://localhost:3000/expense/delete/${Expense._id}`)
+              message.success('Expense deleted successfully')
+              window.location.reload();
+            }} ><Trash2 color="red" /> Delete Expense</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
