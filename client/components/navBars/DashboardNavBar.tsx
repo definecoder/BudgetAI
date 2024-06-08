@@ -26,8 +26,8 @@ const DashboardNavBar = () => {
 
         {/* buttons part */}
         <div className=' flex justify-between items-center gap-8'>
-            <Link href={'#'}> Dashboard</Link>
-            <Link href={'#'}> Analytics</Link>
+            <Link href={'/dashboard'}> Dashboard</Link>
+            <Link href={'/analytics'}> Analytics</Link>
             <Link href={'#'}> Profile</Link>
             <Link href={'/'} onClick={()=>{
                 localStorage.removeItem('token');

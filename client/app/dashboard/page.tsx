@@ -5,7 +5,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea"
 import { DataTableDemo } from "./myTable";
 import {PaperPlaneIcon} from '@radix-ui/react-icons'
-import { cookies} from 'next/headers';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { message } from "antd";
@@ -63,6 +62,7 @@ export default function Page() {
     const token = localStorage.getItem('token');
     async function fetchExpenses(){
       try{
+        console.log('current user '+ user?._id);
         const response = user?._id && await axios.get(`http://localhost:3000/expense/getAllExpenses/${user?._id}`, {
           headers: {
             Authorization: `Bearer ${token}`
@@ -88,7 +88,7 @@ export default function Page() {
 
             setIsLoadingButton(true);
 
-            const userId = '66558be44804b8c937d9782f'
+            const userId = '665dd31041df4941fab0db34'
             const response = await axios.post('http://localhost:3000/expense/add', {text: expense, userId: userId}, {
                 headers: {
                     Authorization: `Bearer ${token}`
