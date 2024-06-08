@@ -3,6 +3,7 @@ import Expense from "../models/expense";
 import errorWrapper from "../middlewares/ErrorWrapper";
 import { getExpenseInfo } from "../services/addExpenseService/addBudget";
 import OpenAI from "openai";
+import { getInfo } from "../services/chatExpense/readExpense";
 
 export const addExpense = errorWrapper(
   async (req: Request, res: Response) => {
@@ -75,6 +76,17 @@ export const deleteExpense = errorWrapper(
     res.send(data);
   },
   { statusCode: 400, message: "Delete expense failed" }
+);
+
+export const chatExpense = errorWrapper(
+  async (req: Request, res: Response) => {
+    const { text } = req.body;
+
+    const reply = await getInfo(text);
+
+    res.send(reply);
+  },
+  { statusCode: 400, message: "Chat expense failed" }
 );
 
 // Path: server/src/controllers/user.ts

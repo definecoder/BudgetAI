@@ -42,8 +42,10 @@ const vectorStore = new MongoDBAtlasVectorSearch(embeddings, {
   embeddingKey: "embedding",
 });
 
-const getInfo = async (text: string) => {
+export const getInfo = async (text: string) => {
   // const k = await collection.countDocuments();
+
+  await generateEmbeddings();
   const llm = new ChatOpenAI({ model: "gpt-3.5-turbo" });
   const retriever = vectorStore.asRetriever();
   const prompt = ChatPromptTemplate.fromTemplate(`
@@ -61,24 +63,17 @@ const getInfo = async (text: string) => {
   });
 
   let ctx = await retriever.invoke(text);
-  // copy all content of ctx.metadata to ctx.pageContent
 
   ctx = ctx.map((c) => {
     c.pageContent = JSON.stringify(c.metadata);
     return c;
   });
 
-  // console.log("context:", ctx);
-
   const response = await ragChain.invoke({
     context: ctx,
     input: text,
   });
 
-  console.log(response);
+  // console.log(response);
   return response;
 };
-
-generateEmbeddings().then(() => {
-  getInfo("How much expensed in food category today?");
-});
