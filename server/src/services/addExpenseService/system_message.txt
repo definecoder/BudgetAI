@@ -36,3 +36,5 @@ prompt: I bought a shoe 200 taka from bata
     "amount": 200,
     "description": "Shoe from Bata"
 }
+
+Please capitalize the first letter

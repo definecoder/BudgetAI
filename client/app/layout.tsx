@@ -4,6 +4,8 @@ import "./globals.css";
 import '@mantine/core/styles.css';
 
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+import { MinChatUiProvider } from "@minchat/react-chat-ui";
+import { myColorSet } from "@/components/utils/chatColorSet";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <head><ColorSchemeScript /></head>
       <body className="bg-bgColor text-white">
-        <MantineProvider>{children}</MantineProvider>  
+        <MantineProvider>{children}</MantineProvider>
       </body>
     </html>
   );

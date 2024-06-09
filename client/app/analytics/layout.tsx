@@ -1,4 +1,5 @@
 import DashboardNavBar from "@/components/navBars/DashboardNavBar";
+import { MinChatUiProvider } from "@minchat/react-chat-ui";
 
 
 
