@@ -46,7 +46,7 @@ export const getInfo = async (text: string) => {
   // const k = await collection.countDocuments();
 
   await generateEmbeddings();
-  const llm = new ChatOpenAI({ model: "gpt-3.5-turbo" });
+  const llm = new ChatOpenAI({ model: "gpt-4o" });
   const retriever = vectorStore.asRetriever();
   const prompt = ChatPromptTemplate.fromTemplate(`
     You're a Expense Manager, Answer the following question based on the provided context:

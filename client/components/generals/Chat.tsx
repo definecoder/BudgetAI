@@ -8,9 +8,8 @@ import {
   MessageList,
   MessageHeader
 } from "@minchat/react-chat-ui";
-import { message } from "antd";
 import { useState } from "react";
-import { myColorSet } from "../utils/chatColorSet";
+import axios from "axios";
 
 type Message = {
   text: string;
@@ -46,18 +45,38 @@ function Chat() {
             showTypingIndicator={isLoading}
             
           />
-          <MessageInput showSendButton={true} onSendMessage={(text)=>{
+          <MessageInput showSendButton={true} onSendMessage={async (text)=>{
             setIsLoading(true);
+
+            const newMessages = [
+                ...messages, 
+                { 
+                    text, 
+                    user: {
+                        id: 'abc',
+                        name: 'Shawon Majid'
+                    }
+                }
+            ];
+
+            setMessages(newMessages);
+
+            const response = await axios.post('http://localhost:3000/expense/chat', {text});
+
             setMessages([
-              ...messages,
+              ...newMessages,
               {
-                text,
+                text: response.data.reply,
                 user: {
-                  id: 'abc',
-                  name: 'Shawon Majid'
+                  id: 'ai',
+                  name: 'Expense Manager'
                 }
               }
             ])
+
+            setIsLoading(false);
+
+
           }} placeholder="Type message here" />
         </MessageContainer>
       </MainContainer>

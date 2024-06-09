@@ -84,7 +84,7 @@ export const chatExpense = errorWrapper(
 
     const reply = await getInfo(text);
 
-    res.send(reply);
+    res.send({ reply });
   },
   { statusCode: 400, message: "Chat expense failed" }
 );
