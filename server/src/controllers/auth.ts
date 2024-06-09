@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import User from "../models/user";
 import { generateToken } from "./token";
-import errorWrapper from "../middlewares/ErrorWrapper";
+import errorWrapper from "../middlewares/errorWrapper";
 
 const secret = process.env.JWT_SECRET;
 
@@ -15,7 +15,7 @@ export const signup = errorWrapper(
       password,
     });
     const data = await user.save();
-    const token = generateToken({ id: data._id, email }, "1h");
+    const token = generateToken({ id: data._id, email }, "6h");
     const responseData = {
       user,
       token,

@@ -7,6 +7,7 @@ import {
   getExpense,
   getExpenses,
 } from "../controllers/expense";
+import authChecker from "../middlewares/auth";
 
 const router = express.Router();
 
@@ -16,6 +17,6 @@ router.route("/getAllExpenses/:userId").get(getExpenses);
 router.route("/getExpense/:id").get(getExpense);
 router.route("/delete/:id").delete(deleteExpense);
 
-router.route("/chat").post(chatExpense);
+router.route("/chat").post(authChecker, chatExpense);
 
 export default router;

@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { ChatOpenAI, OpenAIEmbeddings } from "@langchain/openai";
-import { MongoClient } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 import { MongoDBAtlasVectorSearch } from "@langchain/mongodb";
 import { createStuffDocumentsChain } from "langchain/chains/combine_documents";
 import { createRetrievalChain } from "langchain/chains/retrieval";
@@ -42,11 +42,11 @@ const vectorStore = new MongoDBAtlasVectorSearch(embeddings, {
   embeddingKey: "embedding",
 });
 
-export const getInfo = async (text: string) => {
+export const getInfo = async (text: string, userId: string) => {
   // const k = await collection.countDocuments();
 
   await generateEmbeddings();
-  const llm = new ChatOpenAI({ model: "gpt-4o" });
+  const llm = new ChatOpenAI({ model: "gpt-3.5-turbo-0125" });
   const retriever = vectorStore.asRetriever();
   const prompt = ChatPromptTemplate.fromTemplate(`
     You're a Expense Manager, Answer the following question based on the provided context:
@@ -69,6 +69,10 @@ export const getInfo = async (text: string) => {
     return c;
   });
 
+  ctx = ctx.filter((c) => {
+    return c.metadata.user.toString() === userId.toString();
+  });
+
   const response = await ragChain.invoke({
     context: ctx,
     input: text,
@@ -77,3 +81,24 @@ export const getInfo = async (text: string) => {
   // console.log(response);
   return response;
 };
+
+// const checkRetriever = async () => {
+//   const retriever = vectorStore.asRetriever();
+//   const userId = new ObjectId("666586ea1f1fe37ab1f26ac4");
+//   let ctx = await retriever.invoke(
+//     `what are my expenses find for user ${userId} only`
+//   );
+
+//   ctx = ctx.map((c) => {
+//     c.pageContent = JSON.stringify(c.metadata);
+//     return c;
+//   });
+
+//   ctx = ctx.filter((c) => {
+//     return c.metadata.user.toString() === userId.toString();
+//   });
+
+//   console.log(ctx);
+// };
+
+// checkRetriever();

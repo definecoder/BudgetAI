@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { getToken, verifyToken } from "./token";
 
 import User from "../models/user";
-import errorWrapper from "../middlewares/ErrorWrapper";
+import errorWrapper from "../middlewares/errorWrapper";
 
 const getLoggedInUser = errorWrapper(
   async (req: Request, res: Response) => {

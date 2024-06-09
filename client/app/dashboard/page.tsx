@@ -40,6 +40,8 @@ export default function Page() {
 
                 setIsLoading(false);
                 console.log(response.data);
+
+                localStorage.setItem('userName', response.data.name);
                 setUser(response.data);
 
             }
@@ -88,8 +90,8 @@ export default function Page() {
 
             setIsLoadingButton(true);
 
-            const userId = '665dd31041df4941fab0db34'
-            const response = await axios.post('http://localhost:3000/expense/add', {text: expense, userId: userId}, {
+            
+            const response = await axios.post('http://localhost:3000/expense/add', {text: expense, userId: user?._id}, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

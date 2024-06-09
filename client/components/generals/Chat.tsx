@@ -19,12 +19,17 @@ type Message = {
   };
 };
 
-function Chat() {
+function Chat({token}:{token: string}) {
+
+    let userName: any;
+    if (typeof window !== 'undefined') {
+        userName = localStorage.getItem('userName');
+    }   
   
     const [isLoading, setIsLoading] = useState<boolean>(false);
   const [messages, setMessages] = useState<Message[]>([
     {
-      text: "Hello Shawon Majid, How can I help you today?",
+      text: `Hello ${userName}, How can I help you today?`,
       user: {
         id: "ai",
         name: "Expense Manager"
@@ -61,7 +66,11 @@ function Chat() {
 
             setMessages(newMessages);
 
-            const response = await axios.post('http://localhost:3000/expense/chat', {text});
+            const response = await axios.post('http://localhost:3000/expense/chat', {text},{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
 
             setMessages([
               ...newMessages,

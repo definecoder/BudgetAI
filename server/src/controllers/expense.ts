@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Expense from "../models/expense";
-import errorWrapper from "../middlewares/ErrorWrapper";
+import errorWrapper from "../middlewares/errorWrapper";
 import { getExpenseInfo } from "../services/addExpenseService/addBudget";
 import OpenAI from "openai";
 import { getInfo } from "../services/chatExpense/readExpense";
@@ -36,17 +36,14 @@ export const getExpenses = errorWrapper(
   async (req: Request, res: Response) => {
     const { userId } = req.params;
 
-    console.log(userId);
-
     const data = await Expense.find({ user: userId }).sort({ createdAt: -1 });
-
-    console.log(data);
 
     res.send(data);
   },
   { statusCode: 400, message: "Get expenses failed" }
 );
 
+// get expense by id
 export const getExpense = errorWrapper(
   async (req: Request, res: Response) => {
     const { id } = req.params;
@@ -82,7 +79,7 @@ export const chatExpense = errorWrapper(
   async (req: Request, res: Response) => {
     const { text } = req.body;
 
-    const reply = await getInfo(text);
+    const reply = await getInfo(text, req.user?.id);
 
     res.send({ reply });
   },
